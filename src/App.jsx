@@ -1,6 +1,6 @@
 import { useState } from "react";
-
-
+import './index.css';
+import LanguageFlags from "./components/LanguageFlags";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,39 +10,41 @@ function App() {
 
   const API_KEY = import.meta.env.VITE_API_KEY;
 
+  const img_size = "w342";
+  const img_url = `https://image.tmdb.org/t/p/${img_size}`;
+
   function handleSubmit(e) {
     e.preventDefault();
 
     const movies_url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchQuery}`;
     const tvshows_url = `https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&query=${searchQuery}`;
 
-    // fetch dei film
     fetch(movies_url)
       .then(res => res.json())
       .then(data => {
-        const movies = data.results.map(movie => ({
+        const movies = data.results ? data.results.map(movie => ({
           id: movie.id,
           title: movie.title,
           original_title: movie.original_title,
           language: movie.original_language,
           vote: movie.vote_average,
+          poster: movie.poster_path,
           type: 'film',
-        }));
+        })) : [];
 
-        // fetch delle serie tv
         fetch(tvshows_url)
           .then(res => res.json())
           .then(data => {
-            const tvShows = data.results.map(tv => ({
+            const tvShows = data.results ? data.results.map(tv => ({
               id: tv.id,
               title: tv.name,
               original_title: tv.original_name,
               language: tv.original_language,
               vote: tv.vote_average,
+              poster: tv.poster_path,
               type: 'serie tv',
-            }));
+            })) : [];
 
-            // spread nell'array con il catalogo completo
             setCatalog([...movies, ...tvShows]);
           });
       });
@@ -76,9 +78,19 @@ function App() {
               <div className="col" key={`${product.type}-${product.id}`}>
                 <div className="border rounded p-3 h-100">
                   <h5 className="text-center">{product.title}</h5>
+                  {product.poster ? (
+                    <img
+                      src={`${img_url}${product.poster}`}
+                      alt={product.title} />
+                  ) : (
+                    <h5> Nessuna immagine </h5>)}
                   <p className="text-center small text-muted text-uppercase">{product.type}</p>
                   <p className="mb-1"><strong>Titolo originale:</strong> {product.original_title}</p>
-                  <p className="mb-1"><strong>Lingua:</strong> {product.language}</p>
+                  {/* componente per mostrare le bandiere al posto del codice */}
+                  <p className="mb-1">
+                    <strong>Lingua:</strong>
+                    <LanguageFlags language={product.language} />
+                  </p>
                   <p><strong>Voto:</strong> {product.vote}</p>
                 </div>
               </div>
