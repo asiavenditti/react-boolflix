@@ -1,6 +1,7 @@
 import { useState } from "react";
 import './index.css';
 import LanguageFlags from "./components/LanguageFlags";
+import Stars from "./components/Stars";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -91,7 +92,7 @@ function App() {
                     <strong>Lingua:</strong>
                     <LanguageFlags language={product.language} />
                   </p>
-                  <p><strong>Voto:</strong> {product.vote}</p>
+                  <p><strong>Voto:</strong> <Stars vote={product.vote} /></p>
                 </div>
               </div>
             ))}
