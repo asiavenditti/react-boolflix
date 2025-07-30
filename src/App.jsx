@@ -54,9 +54,9 @@ function App() {
   return (
     <>
       {/* Barra di ricerca */}
-      <div className="p-4 mb-3 bg-light rounded">
+      <div className="p-4 mb-3 bg-darkgray rounded">
         <div className="container d-flex align-items-center gap-3">
-          <h1 className="h3 mb-0">Boolflix</h1>
+          <img src="./boolflix.png" alt="" />
           <form onSubmit={handleSubmit} className="d-flex gap-2 flex-grow-1">
             <input
               type="text"
@@ -64,7 +64,7 @@ function App() {
               placeholder="Cerca nel catalogo.."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)} />
-            <button className="btn btn-primary" type="submit">
+            <button className="btn btn-danger" type="submit">
               Cerca
             </button>
           </form>
@@ -77,22 +77,29 @@ function App() {
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
             {catalog.map(product => (
               <div className="col" key={`${product.type}-${product.id}`}>
-                <div className="border rounded p-3 h-100">
-                  <h5 className="text-center">{product.title}</h5>
-                  {product.poster ? (
-                    <img
-                      src={`${img_url}${product.poster}`}
-                      alt={product.title} />
-                  ) : (
-                    <h5> Nessuna immagine </h5>)}
-                  <p className="text-center small text-muted text-uppercase">{product.type}</p>
-                  <p className="mb-1"><strong>Titolo originale:</strong> {product.original_title}</p>
-                  {/* componente per mostrare le bandiere al posto del codice */}
-                  <p className="mb-1">
-                    <strong>Lingua:</strong>
-                    <LanguageFlags language={product.language} />
-                  </p>
-                  <p><strong>Voto:</strong> <Stars vote={product.vote} /></p>
+                <div className="card h-100 bg-dark text-white">
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title text-center">{product.title}</h5>
+                    <p className="text-center small text-uppercase text-warning">
+                      {product.type}
+                    </p>
+                    {product.poster ? (
+                      <img
+                        src={`${img_url}${product.poster}`}
+                        alt={product.title}
+                        className="card-img-top mb-3"
+                      />
+                    ) : (
+                      <div className="card-img-top text-white fw-bold d-flex align-items-center justify-content-center" style={{ height: '500px' }}>
+                        Nessuna immagine
+                      </div>
+                    )}
+                    <p className="mb-1"><strong>Titolo originale:</strong> {product.original_title}</p>
+                    <p className="mb-1">
+                      <strong>Lingua:</strong> <LanguageFlags language={product.language} />
+                    </p>
+                    <p className="mt-auto"><strong>Voto:</strong> <Stars vote={product.vote} /></p>
+                  </div>
                 </div>
               </div>
             ))}

@@ -1,1 +1,17 @@
 @import 'bootstrap';
+
+body {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+.bg-darkgray {
+    background-color: #1f1f1f !important;
+}
+
+
+
+input.form-control {
+    background-color: #2b2b2b;
+    color: #fff;
+}
